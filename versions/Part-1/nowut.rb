@@ -11,14 +11,11 @@ class Nowut
   end
 
   def compile
-    puts 'stream length is' + @source_code.length.to_s
     my_tokenizer = Tokenizer.new(@source_code)
-    tokens = my_tokenizer.lexer
-    puts tokens
+    c_number = my_tokenizer.lexer
+    my_generator = Generator.new(:number => c_number)
 
-    # my_generator = Generator.new(:number => c_number)
-
-    # write_code(my_generator.generate_code)
+    write_code(my_generator.generate_code)
   end
 
   def write_code(code)
