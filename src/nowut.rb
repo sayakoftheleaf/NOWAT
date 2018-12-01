@@ -27,4 +27,3 @@ end
 
 run_this = Nowut.new(ARGV[0], ARGV[1])
 run_this.compile
- 
