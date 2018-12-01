@@ -11,7 +11,6 @@ class Nowut
   end
 
   def compile
-    puts 'stream length is' + @source_code.length.to_s
     my_tokenizer = Tokenizer.new(@source_code)
     tokens = my_tokenizer.lexer
     puts tokens

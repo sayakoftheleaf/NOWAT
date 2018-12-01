@@ -3,7 +3,6 @@ class Tokenizer
   def initialize(stream)
     @string_stream = stream
     @ast = {}
-    @symbol_tokens = /{}\(\);/ # these are simple defined symbols
   end
 
   def lexer
@@ -11,12 +10,10 @@ class Tokenizer
     lexer_pos = 0
 
     while lexer_pos < @string_stream.length
-      puts token_list
+      # print token_list
+      # puts
       current_word, lexer_pos = next_token(lexer_pos)
-      puts 'lexer pos is ' + lexer_pos.to_s
-      puts 'current word is' + current_word
-      puts
-      token_list.push(current_word)
+      token_list.push(current_word) if lexer_pos < @string_stream.length
     end
 
     token_list # return
@@ -27,20 +24,20 @@ class Tokenizer
     # ignore whitespace preceding next token
     lexer_pos += 1 while @string_stream[lexer_pos] =~ /\s/
 
-    puts 'escaped whitespace'
+    # guards against the cases where EOF is reached
+    return 'dummy', lexer_pos unless lexer_pos < @string_stream.length
+
     character = @string_stream[lexer_pos]
 
     # any letter followed 0 or more letters/digits
-    if character =~ /[a-zA-Z]\w*/
-      current_word, lexer_pos = parse_word(lexer_pos)
-      puts 'returning from word is ' + current_word.to_s + ' ' + lexer_pos.to_s
-      return current_word, lexer_pos
-    end
+    return parse_word(lexer_pos) if character =~ /[a-zA-Z]\w*/
 
     # numbers
     return parse_number(lexer_pos) if character =~ /[0-9]\d*/
 
-    return character, lexer_pos + 1 if character =~ @symbol_tokens
+    if character =~ /[{}();]/
+      return {:value => character, :ctype => :csymbol}, (lexer_pos + 1)
+    end
 
     # TODO: parse chars
     # TODO: parse C strings
@@ -56,8 +53,8 @@ class Tokenizer
       lexer_pos += 1
     end
 
-    puts 'word is' + current_word
-    return current_word, lexer_pos # return
+    # TODO: differentiate between names and keywords
+    return {:value => current_word, :ctype => :cword}, lexer_pos
   end
 
   def parse_number(lexer_pos)
@@ -69,7 +66,7 @@ class Tokenizer
       lexer_pos += 1
     end
 
-    return number, lexer_pos # return
+    return {:value => number, :ctype => :cint}, lexer_pos # return
   end
 
   # def parse_string(pos)
