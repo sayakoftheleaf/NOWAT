@@ -11,7 +11,7 @@ class Nowut
   end
 
   def compile
-    my_tokenizer = Tokenizer.new(@source_code)
+    my_tokenizer = Lexer.new(@source_code)
     c_number = my_tokenizer.lexer
     my_generator = Generator.new(:number => c_number)
 

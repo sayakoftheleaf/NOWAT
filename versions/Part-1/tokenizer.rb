@@ -1,5 +1,5 @@
 # Takes a character return and returns an AST
-class Tokenizer
+class Lexer
   def initialize(stream)
     @string_stream = stream
     @ast = {}

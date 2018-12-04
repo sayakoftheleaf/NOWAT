@@ -1,5 +1,5 @@
 require_relative 'generator'
-require_relative 'tokenizer'
+require_relative 'lexer'
 
 # Main class that compiles the C source code
 # into the BrainFuck code
@@ -11,8 +11,9 @@ class Nowut
   end
 
   def compile
-    my_tokenizer = Tokenizer.new(@source_code)
+    my_tokenizer = Lexer.new(@source_code)
     tokens = my_tokenizer.lexer
+
     puts tokens
 
     # my_generator = Generator.new(:number => c_number)

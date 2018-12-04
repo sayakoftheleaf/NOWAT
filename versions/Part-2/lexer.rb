@@ -1,10 +1,16 @@
-# rubocop:disable Metrics/LineLength, Style/RedundantReturn
+# rubocop: disable Metrics/LineLength, Style/RedundantReturn
+# rubocop: disable Metrics/CyclomaticComplexity, Metrics/AbcSize
 
-# Takes a character return and returns an AST
-class Tokenizer
+# #####################################################################
+#                               LEXER
+#
+#                  Takes source code and transforms
+#                  it into a hash table of tokens.
+#
+# #####################################################################
+class Lexer
   def initialize(stream)
     @string_stream = stream
-    @ast = {}
   end
 
   def lexer
@@ -43,6 +49,8 @@ class Tokenizer
     # TODO: parse C strings
   end
 
+  # tokenize words based on given regex
+  # (can handle names, integers)
   def tokenize_word(lexer_pos, regex, ctype)
     current_word = ''
     loop do
@@ -55,10 +63,10 @@ class Tokenizer
 
     # special case for pointers
     # TODO: handle multiple pointers
-    return [{ value: current_word, ctype: :cpointer}, lexer_pos + 1] if @string_stream[lexer_pos] == '*'
+    return [{ value: current_word, ctype: :cpointer }, lexer_pos + 1] if @string_stream[lexer_pos] == '*'
 
     # TODO: differentiate between names and keywords
-    return [{ value: current_word, ctype: ctype}, lexer_pos]
+    return [{ value: current_word, ctype: ctype }, lexer_pos]
   end
 
   def tokenize_string(lexer_pos)
@@ -79,25 +87,5 @@ class Tokenizer
 
     return [{ value: current_word, ctype: :cstring }, lexer_pos]
   end
-
-  # def parse_function
-  # end
-
-  # def get_function_body(portion_of_code)
-  #   pos = 0
-  #   function_body = ''
-  #   while pos < portion_of_code.length
-  #     character = portion_of_code[pos]
-  #     pos += 1
-  #     if character == '{'
-  #       flag = true
-  #     elsif flag == true
-  #       if character == '}'
-  #         return function_body # return when end of function is reached
-  #       end
-  #       function_body += character
-  #     end
-  #   end
-  # end
 
 end
