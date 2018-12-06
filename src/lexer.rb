@@ -8,9 +8,12 @@
 #                  it into a hash table of tokens.
 #
 # #####################################################################
+
 class Lexer
   def initialize(stream)
     @string_stream = stream
+    @symbol_table = {}
+    @next_id = 1
   end
 
   def lexer
@@ -41,7 +44,9 @@ class Lexer
     return tokenize_word(lexer_pos, "[0-9]\d*", :cint) if character =~ /[0-9]\d*/
 
     # special strings
-    return [{ value: character, ctype: :csymbol }, (lexer_pos + 1)] if character =~ /[{}();]/
+    # return [{ value: character, ctype: :csymbol }, (lexer_pos + 1)] if character =~ /[{}();]/
+
+    return [{ value: character, ctype: :special, table_entry: nil}, (lexer_pos + 1)] if character =~ /[{}();]/
 
     return tokenize_string(lexer_pos + 1) if character =~ /"/
 
@@ -63,10 +68,15 @@ class Lexer
 
     # special case for pointers
     # TODO: handle multiple pointers
-    return [{ value: current_word, ctype: :cpointer }, lexer_pos + 1] if @string_stream[lexer_pos] == '*'
+    @symbol_table[@next_id] = { name: current_word }
+    @next_id += 1
+
+    if @string_stream[lexer_pos] == '*'
+      return [{ value: current_word, ctype: :cpointer, table_entry: @next_id - 1 }, lexer_pos + 1]
+    end
 
     # TODO: differentiate between names and keywords
-    return [{ value: current_word, ctype: ctype }, lexer_pos]
+    return [{ value: current_word, ctype: ctype, table_entry: @next_id - 1 }, lexer_pos]
   end
 
   def tokenize_string(lexer_pos)
@@ -88,5 +98,13 @@ class Lexer
     return [{ value: current_word, ctype: :cstring }, lexer_pos]
   end
 
+  def check_if_data_type(some_word)
+    data_types = %i[cint cchar cdouble cfloat cvoid]
+    some_word = ('c' + some_word).to_sym
+
+    return false if data_types[some_word].nil?
+
+    return [true, some_word]
+  end
 end
 
