@@ -1,12 +1,12 @@
 # Progress - Week 1 - Starting out
 
-    Okay, so not only have I taken up the hardest programming challenge that I have
+Okay, so not only have I taken up the hardest programming challenge that I have
 ever tackled, I have also decided to implement it in a language that I
 literally started learning today - Ruby. What could possibly go wrong? I feel
 like I need to explain my decisions a bit here, because it wasn't just a #YOLO
 moment (well, it kinda was, but there was certainly more to it than that).
 
-    My first instinct was to write this in Python, because that is the language
+My first instinct was to write this in Python, because that is the language
 I am using in all of my work and personal projects at the moment, except for
 the one game project I am writing in C++ because you know, Unreal Engine. But
 then, after mulling over the subject a little bit, I decided that maybe
