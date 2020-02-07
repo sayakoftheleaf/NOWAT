@@ -1,6 +1,0 @@
-#!/usr/bin/ruby
-
-require_relative './src/compiler.rb'
-
-nowut = Compiler.new(ARGV[0], ARGV[1])
-nowut.compile
