@@ -47,11 +47,11 @@ fn reset_pointer(location: i64, current_pointer: i64) -> String {
     }
 }
 
-pub fn decrement_stack(times: u64) -> String {
+fn decrement_stack(times: u64) -> String {
     repeat("<", times)
 }
 
-pub fn increment_stack(times: u64) -> String {
+fn increment_stack(times: u64) -> String {
     repeat(">", times)
 }
 
@@ -73,4 +73,9 @@ pub fn sub(value: u64) -> String {
 
 fn repeat(character: &str, times: u64) -> String {
     (0..times).map(|_| character).collect::<String>()
+}
+
+// Initialize 32 64-bit registers at the beginning of the memory stack
+pub fn initialize_registers() -> String {
+    increment_stack(32)
 }
