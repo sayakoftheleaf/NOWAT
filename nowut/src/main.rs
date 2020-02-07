@@ -1,5 +1,4 @@
-mod ast;
+mod brainfuck;
 mod cparser;
-mod tests;
 
 fn main() {}

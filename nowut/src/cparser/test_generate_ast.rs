@@ -1,5 +1,5 @@
-use crate::ast::{Function, Statement, Types, Value, AST};
-use crate::cparser::*;
+use crate::cparser::ast::{Function, Statement, Types, Value, AST};
+use crate::cparser::cparser::*;
 
 #[test]
 fn test_valid_stage_1() {

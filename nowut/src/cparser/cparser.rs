@@ -5,7 +5,7 @@ use ::pest::{
 };
 use ::pest_derive::*;
 
-use crate::ast::{Function, Statement, Types, Value, AST};
+use crate::cparser::ast::{Function, Statement, Types, Value, AST};
 
 #[derive(Parser)]
 #[grammar = "c.pest"]
