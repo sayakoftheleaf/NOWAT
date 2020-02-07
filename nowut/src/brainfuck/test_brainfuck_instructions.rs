@@ -11,6 +11,18 @@ fn test_sub() {
 }
 
 #[test]
+fn test_flush() {
+    assert_eq!("<<[-]>>", flush(0, 2));
+}
+
+#[test]
 fn test_move() {
-    assert_eq!("<<[-]++++", mov(0, 4, 2));
+    // move postive from left to right
+    assert_eq!("<<[-]++++>>", mov(0, 4, 2));
+
+    // move positive from right to left
+    assert_eq!(">>[-]++++<<", mov(2, 4, 0));
+
+    // moving negative
+    assert_eq!("<<[-]---->>", mov(0, -4, 2));
 }
