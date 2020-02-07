@@ -5,7 +5,7 @@ use ::pest::{
 };
 use ::pest_derive::*;
 
-use crate::cparser::ast::{Function, Statement, Types, Value, AST};
+use crate::cparser::ast::{Function, FunctionBuilder, Statement, Types, Value, AST};
 
 #[derive(Parser)]
 #[grammar = "c.pest"]
@@ -24,29 +24,27 @@ pub fn parser(string: &str) -> AST {
 }
 
 fn parse_function(func: Pair<'_, Rule>) -> Function {
-    let mut return_type = None;
-    let mut identifier = None;
-    let mut statement = None;
+    let mut function = FunctionBuilder::default();
 
     for token in func.into_inner() {
         match token.as_rule() {
             Rule::types => match token.into_inner().next().unwrap().as_rule() {
-                Rule::INT => return_type = Some(Types::Integer),
+                Rule::INT => {
+                    function.return_type(Types::Integer);
+                }
                 _ => unreachable!(),
             },
-            Rule::identifier => identifier = Some(token.as_str().to_string()),
+            Rule::identifier => {
+                function.name(token.as_str().to_string());
+            }
             Rule::statement => {
-                statement = Some(parse_statement(token));
+                function.statements(vec![parse_statement(token)]);
             }
             _ => unreachable!(),
         }
     }
 
-    Function {
-        name: identifier.unwrap(),
-        return_type: return_type.unwrap(),
-        statements: vec![statement.unwrap()],
-    }
+    function.build().unwrap()
 }
 
 fn parse_statement(token: Pair<'_, Rule>) -> Statement {
