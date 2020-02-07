@@ -1,0 +1,19 @@
+WT = _{ WHITE_SPACE | NEWLINE }
+
+// literals
+int_literal = { ASCII_DIGIT+}
+
+types = { INT }
+
+identifier = { ASCII_ALPHANUMERIC+ }
+
+statement = { return_statement }
+
+return_statement = { RETURN ~ WT+ ~ return_val ~ WT* ~ ";" }
+return_val = _{ int_literal }
+
+function = { WT* ~ types ~ WT+ ~ identifier ~ WT* ~ "(" ~ WT* ~ ")" ~ WT* ~ "{" ~ (WT* ~ statement ~ WT*)+ ~ "}" }
+
+keyword = { INT | RETURN }
+INT = { "int" }
+RETURN = _{"return"}
